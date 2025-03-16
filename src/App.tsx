@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import BoardItem from 'components/BoardItem'
 import {latestBoardListMock, top3BoardListMock, commentListMock, favoriteListMock} from 'mocks';
@@ -8,22 +8,26 @@ import FavoriteItem from "./components/FavoriteItem";
 import InputBox from "./components/InputBox";
 // commit 고침
 function App() {
-  return (
-    <>
-        <InputBox/>
-        {/*<div style={{ display: 'flex', columnGap: '30px', rowGap: '20px' }}>*/}
 
-        {/*    {favoriteListMock.map(favoriteListItem => <FavoriteItem favoriteListItem={favoriteListItem} />)}*/}
-        {/*</div>*/}
-        {/*<div style={{ padding: '0 20px', display: 'flex', flexDirection: 'column', gap: '30px' }}>*/}
+    const [value, setValue] = useState<string>('');
 
-        {/*    {commentListMock.map(commentItem => <CommentItem commentListItem={commentItem} />)}*/}
-        {/*</div>*/}
-      {/*<div style={{ display: 'flex', justifyContent: 'center', gap: '24px' }}>*/}
-      {/*    {top3BoardListMock.map(top3ListItem => <Top3Item top3ListItem={top3ListItem}/>)}*/}
-      {/*</div>*/}
-      {/*{latestBoardListMock.map(boardListItem => <BoardItem boardListItem={boardListItem}/> )}*/}
-    </>
+    return (
+        <>
+            <InputBox label='이메일' type='text' placeholder='이메일 주소를 입력해주세요' value={value} error={false} setValue={setValue} />
+
+            {/*<div style={{ display: 'flex', columnGap: '30px', rowGap: '20px' }}>*/}
+
+            {/*    {favoriteListMock.map(favoriteListItem => <FavoriteItem favoriteListItem={favoriteListItem} />)}*/}
+            {/*</div>*/}
+            {/*<div style={{ padding: '0 20px', display: 'flex', flexDirection: 'column', gap: '30px' }}>*/}
+
+            {/*    {commentListMock.map(commentItem => <CommentItem commentListItem={commentItem} />)}*/}
+            {/*</div>*/}
+          {/*<div style={{ display: 'flex', justifyContent: 'center', gap: '24px' }}>*/}
+          {/*    {top3BoardListMock.map(top3ListItem => <Top3Item top3ListItem={top3ListItem}/>)}*/}
+          {/*</div>*/}
+          {/*{latestBoardListMock.map(boardListItem => <BoardItem boardListItem={boardListItem}/> )}*/}
+        </>
   );
 }
 
