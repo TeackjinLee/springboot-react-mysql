@@ -12,7 +12,6 @@ export default function Container() {
     //      render: layout render      //
     return (
         <>
-            {pathname}
             <Header />
             <Outlet />
             {pathname !== AUTH_PATH() && <Footer />}
