@@ -31,8 +31,11 @@ export default function Authentication() {
         //      event handler: 로그인 버튼 클릭 이벤트 처리        //
         const onSignInButtonClickHandler = () => {
 
-        }
-
+        };
+        //      event handler: 회원가입 링크 클릭 이벤트 처리        //
+        const onSignUpLinkClickHandler = () => {
+            setView('sign-up');
+        };
         //      event handler: 패스워드 버튼 클릭 이벤트 처리        //
         const onPasswordButtonClickHandler = () => {
             if (passwordType === "text") {
@@ -70,14 +73,16 @@ export default function Authentication() {
                         <InputBox ref={passwordRef} label='패스워드' type={passwordType} placeholder='비밀번호를 입력해주세요.' value={password} setValue={setPassword} error={error} icon={passwordButtonIcon} onButtonClick={onPasswordButtonClickHandler} onKeyDown={onPasswordKeyDownHandler} />
                     </div>
                     <div className="auth-card-bottom">
-                        <div className="auth-sign-in-error-box">
-                            <div className="auth-sign-in-error-message">
-                                {'이메일 주소 또는 비밀번호를 잘못 입력했습니다.\n입력하신 내용을 다시 확인해주세요.'}
+                        {error &&
+                            <div className="auth-sign-in-error-box">
+                                <div className="auth-sign-in-error-message">
+                                    {'이메일 주소 또는 비밀번호를 잘못 입력했습니다.\n입력하신 내용을 다시 확인해주세요.'}
+                                </div>
                             </div>
-                        </div>
+                        }
                         <div className="black-large-full-button" onClick={onSignInButtonClickHandler}>{'로그인'}</div>
                         <div className="auth-description-box">
-                            <div className="auth-description">{'신규 사용자이신가요?'}<span className='auth-description-link'>{'회원가입'}</span></div>
+                            <div className="auth-description">{'신규 사용자이신가요?'}<span className='auth-description-link' onClick={onSignUpLinkClickHandler}>{'회원가입'}</span></div>
                         </div>
                     </div>
                 </div>
