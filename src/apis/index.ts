@@ -2,6 +2,7 @@ import {SignInRequestDto} from "./request/auth";
 import axios from "axios";
 import {SignInResponseDto} from "./response/auth";
 import {ResponseDto} from "./response";
+import {data} from "react-router-dom";
 
 const DOMAIN = 'http://localhost:4001';
 
@@ -22,6 +23,7 @@ export const signInRequest = async (requestBody: SignInRequestDto) => {
                 const responseBody: ResponseDto = error.response.data;
                 return responseBody;
             });
+
     return result;
 }
 
