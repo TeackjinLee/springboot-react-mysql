@@ -115,9 +115,11 @@ export default function Header() {
 
         //      event handler : 로그아웃 버튼 클릭 이벤트 처리 함수       //
         const onSignOutButtonClickHandler = () => {
-            resetLoginUser();
-            setCookie('accessToken', '', {path: MAIN_PATH(), expires: new Date()})
-            navigate(MAIN_PATH());
+            if (window.confirm('로그아웃 하시겠습니까?')) {
+                resetLoginUser();
+                setCookie('accessToken', '', {path: MAIN_PATH(), expires: new Date()})
+                navigate(MAIN_PATH());
+            }
         };
         //      event handler : 마이페이지 버튼 클릭 이벤트 처리 함수       //
         const onMyPageButtonClickHandler = () => {
