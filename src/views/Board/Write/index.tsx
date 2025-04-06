@@ -51,16 +51,40 @@ export default function BoardWrite() {
     //      event handler: 이미지 변경 이벤트 처리     //
     const onImageChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         if (!event.target.files || !event.target.files.length) return;
-        const file = event.target.files[0];
+        /*********** 하나만 만들어지는 문제
+        const fileList = event.target.files;
+        console.log("fileList:::");
+        console.log(fileList);
+        for (let i = 0; i <fileList.length; i++) {
+            const file = event.target.files[i];
+            const imageUrl = URL.createObjectURL(file);
+            const newImageUrls = imageUrls.map(item => item);
+            newImageUrls.push(imageUrl);
+            setImageUrls(newImageUrls);
 
-        const imageUrl = URL.createObjectURL(file);
-        const newImageUrls = imageUrls.map(item => item);
-        newImageUrls.push(imageUrl);
+            const newBoardImageFileList = boardImageFileList.map(item => item);
+            newBoardImageFileList.push(file);
+            setBoardImageFileList(newBoardImageFileList);
+        }
+        *****************/
+        const fileList = Array.from(event.target.files);
+
+        const newImageUrls = [...imageUrls];
+        const newBoardImageFileList = [...boardImageFileList];
+        console.log("======2=");
+        console.log(...imageUrls);
+        console.log("==========");
+        console.log(...boardImageFileList);
+
+        fileList.forEach(file => {
+            const imageUrl = URL.createObjectURL(file);
+            newImageUrls.push(imageUrl);
+            newBoardImageFileList.push(file);
+        });
+
         setImageUrls(newImageUrls);
-
-        const newBoardImageFileList = boardImageFileList.map(item => item);
-        newBoardImageFileList.push(file);
         setBoardImageFileList(newBoardImageFileList);
+
     }
 
     //      event handler: 이미지 업로드 버튼 클릭 이벤트 처리     //
@@ -107,7 +131,7 @@ export default function BoardWrite() {
                         <div className="icon-button" onClick={onImageUploadButtonClickHandler}>
                             <div className="icon image-box-light-icon"></div>
                         </div>
-                        <input ref={imageInputRef} type="file" accept="image/*" style={{display: 'none'}} onChange={onImageChangeHandler}/>
+                        <input ref={imageInputRef} type="file" multiple accept="image/*" style={{display: 'none'}} onChange={onImageChangeHandler}/>
                     </div>
                     <div className="board-write-images-box">
                         {imageUrls.map((imageUrl, index) =>
