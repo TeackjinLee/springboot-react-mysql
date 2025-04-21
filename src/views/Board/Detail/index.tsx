@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, {ChangeEvent, useEffect, useRef, useState} from 'react';
 import './style.css';
 import FavoriteItem from "../../../components/FavoriteItem";
 import {Board, CommentListItem, FavoriteListItem} from "../../../types/interface";
@@ -90,7 +90,8 @@ export default function BoardDetail() {
     }
     //      component: 게시물 상세 하단 화면 컴포넌트       //
     const BoardDetailBottom = () => {
-
+        //      state: 댓글 textArea 참조 상태        //
+        const commentRef = useRef<HTMLTextAreaElement | null>(null);
         //      state: 좋아요 리스트 상태       //
         const [favoriteList, setFavoriteList] = useState<FavoriteListItem[]>([]);
         //      state: 댓글 리스트 상태       //
@@ -115,10 +116,18 @@ export default function BoardDetail() {
         const onShowCommentClickHandler = () => {
             setShowComment(!showComment);
         }
+        //      event handler: 댓글 작성 버튼 클릭 이벤트 처리        //
+        const onCommentSubmitButtonClickHandler = () => {
+            if (!comment) return;
+            alert('댓글달기');
+        }
         //      event handler: 댓글 변경 이벤트 처리        //
-        const onShowCommentChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
+        const onCommentChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
             const {value} = event.target;
             setComment(value);
+            if(!commentRef.current) return;
+            commentRef.current.style.height = 'auto';
+            commentRef.current.style.height = `${commentRef.current.scrollHeight}px`;
         }
 
         //      effect: 게시물 번호 path variable이 바뀔때마다 좋아요 및 댓글 리스트 불러오기       //
@@ -183,9 +192,9 @@ export default function BoardDetail() {
                     </div>
                     <div className="board-detail-bottom-comment-input-box">
                         <div className="board-detail-bottom-comment-input-container">
-                            <textarea className='board-detail-bottom-comment-textarea' placeholder='댓글을 작성해주세요.'></textarea>
-                            <div className="board-detail-bottom-comment-button-box">
-                                <div className="disable-button">{'댓글달기'}</div>
+                            <textarea ref={commentRef} className='board-detail-bottom-comment-textarea' placeholder='댓글을 작성해주세요.' value={comment} onChange={onCommentChangeHandler}></textarea>
+                            <div className="board-detail-bottom-comment-button-box" >
+                                <div className={comment === '' ? 'disable-button' : 'black-button'} onClick={onCommentSubmitButtonClickHandler}>{'댓글달기'}</div>
                             </div>
                         </div>
                     </div>
