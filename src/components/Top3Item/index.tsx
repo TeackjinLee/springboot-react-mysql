@@ -11,7 +11,7 @@ interface Props {
 export default function Top3Item({ top3ListItem }: Props){
 
     //      properties      //
-    const { boardNumber, title, content, boardTitleImage} = top3ListItem;
+    const { boardSeq, title, content, boardTitleImage} = top3ListItem;
     const { writeDatetime, writerNickname, writerProfileImage } = top3ListItem;
     const { favoriteCount, commentCount, viewCount } = top3ListItem;
 
@@ -20,7 +20,7 @@ export default function Top3Item({ top3ListItem }: Props){
 
     //      event handler: 게시물 아이템 클릭 이벤트 처리 함수     //
     const onClickHandler = () => {
-        //navigator(boardNumber);
+        //navigator(boardSeq);
     }
 
     //      render: Top 3 List Item 컴포넌트 렌더링       //
