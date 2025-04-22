@@ -4,7 +4,7 @@ import {SignInResponseDto, SignUpResponseDto} from "./response/auth";
 import {ResponseDto} from "./response";
 import {GetSignInUserResponseDto} from "./response/user";
 import {PostBoardRequestDto} from "./request/board";
-import {PostBoardResponseDto} from "./response/board";
+import {PostBoardResponseDto, GetBoardResponseDto} from "./response/board";
 
 const DOMAIN = 'http://localhost:4001';
 
@@ -48,7 +48,38 @@ export const signUpRequest = async (requestBody: SignInRequestDto) => {
     return result;
 }
 
+const GET_BOARD_URL = (boardSeq: number | string) => `${API_DOMAIN}/board/${boardSeq}`;
+const INCREASE_VIEW_COUNT = (boardSeq: number | string) => `${API_DOMAIN}/board/${boardSeq}/increase-view-count`;
 const POST_BOARD_URL = () => `${API_DOMAIN}/board`;
+
+export const getBoardRequest = async (boardSeq: number | string) => {
+    const result = await axios.get(GET_BOARD_URL(boardSeq))
+        .then(response => {
+            const responseBody: GetBoardResponseDto = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            if (!error.response) return null;
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody;
+        });
+    return result;
+}
+
+export const increaseViewCountRequest = async (boardSeq: number | string) => {
+    const result = await axios.get(INCREASE_VIEW_COUNT(boardSeq))
+        .then(response => {
+            const responseBody: GetBoardResponseDto = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            if (!error.response) return null;
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody;
+        });
+    return result;
+}
+
 export const postBoardRequest = async (requestBody: PostBoardRequestDto, accessToken: string) => {
     const result =  await axios.post(POST_BOARD_URL(), requestBody, authorization(accessToken))
         .then(response => {
