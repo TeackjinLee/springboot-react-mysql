@@ -52,9 +52,9 @@ function App() {
     // description : 로그인 + 회원가입 화면 : '/auth'                       - Authentication   //
     // description : 검색화면            : '/search/:searchWord'         - Search           //
     // description : 유저 페이지          : '/user/:userEmail'            - User             //
-    // description : 게시물 상세보기       : '/board/detail/:boardNumber'  - BoardDetail      //
+    // description : 게시물 상세보기       : '/board/detail/:boardSeq'  - BoardDetail      //
     // description : 게시물 작성하기       : '/board/write'                - BoardWrite       //
-    // description : 게시물 수정하기       : '/board/update/:boardNumber   - BoardUpdate      //
+    // description : 게시물 수정하기       : '/board/update/:boardSeq   - BoardUpdate      //
     return (
         <>
             <Routes>
@@ -65,8 +65,8 @@ function App() {
                     <Route path={USER_PATH(':userEmail')} element={<UserView />}/>
                     <Route path={BOARD_PATH()} >
                         <Route path={BOARD_WRITE_PATH()} element={<BoardWrite />}/>
-                        <Route path={BOARD_DETAIL_PATH(':boardNumber')} element={<BoardDetail />}/>
-                        <Route path={BOARD_UPDATE_PATH(':boardNumber')} element={<BoardUpdate />}/>
+                        <Route path={BOARD_DETAIL_PATH(':boardSeq')} element={<BoardDetail />}/>
+                        <Route path={BOARD_UPDATE_PATH(':boardSeq')} element={<BoardUpdate />}/>
                     </Route>
                 </Route>
                 <Route path='*' element={<h1>404 Not Found</h1>}/>
