@@ -13,6 +13,7 @@
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "axios": "^1.8.4",
+    "dayjs": "^1.11.13",
     "react": "^19.0.0",
     "react-cookie": "^8.0.1",
     "react-daum-postcode": "^3.2.0",
