@@ -3,12 +3,12 @@ import axios from "axios";
 import {SignInResponseDto, SignUpResponseDto} from "./response/auth";
 import {ResponseDto} from "./response";
 import {GetSignInUserResponseDto} from "./response/user";
-import {PostBoardRequestDto, PostCommentRequestDto} from "./request/board";
+import {PostBoardRequestDto} from "./request/board";
 import {
     PostBoardResponseDto,
     GetBoardResponseDto,
     GetFavoriteListResponseDto,
-    GetCommentListResponseDto, PutFavoriteResponseDto, PostCommentResponseDto, DeleteBoardResponseDto
+    GetCommentListResponseDto
 } from "./response/board";
 
 const DOMAIN = 'http://localhost:4001';
@@ -58,9 +58,6 @@ const INCREASE_VIEW_COUNT = (boardSeq: number | string) => `${API_DOMAIN}/board/
 const GET_FAVORITE_LIST_URL = (boardSeq: number | string) => `${API_DOMAIN}/board/${boardSeq}/favorite-list`;
 const GET_COMMENT_LIST_URL = (boardSeq: number | string) => `${API_DOMAIN}/board/${boardSeq}/comment-list`;
 const POST_BOARD_URL = () => `${API_DOMAIN}/board`;
-const PUT_FAVORITE_URL = (boardSeq: number | string) => `${API_DOMAIN}/board/${boardSeq}/favorite`;
-const POST_COMMENT_URL = (boardSeq: number | string) => `${API_DOMAIN}/board/${boardSeq}/comment`;
-const DELETE_BOARD_URL = (boardSeq: number | string) => `${API_DOMAIN}/board/${boardSeq}`;
 
 export const getBoardRequest = async (boardSeq: number | string) => {
     const result = await axios.get(GET_BOARD_URL(boardSeq))
@@ -118,20 +115,6 @@ export const getCommentListRequest = async (boardSeq: number | string) => {
     return result;
 }
 
-export const postCommentRequest = async (boardSeq: number | string, requestBody: PostCommentRequestDto, accessToken: string) => {
-    const result = await axios.post(POST_COMMENT_URL(boardSeq), requestBody, authorization(accessToken))
-        .then(response => {
-            const responseBody: PostCommentResponseDto = response.data;
-            return responseBody;
-        })
-        .catch(error => {
-            if (!error.response) return null;
-            const responseBody: ResponseDto = error.response.data;
-            return responseBody;
-        });
-    return result;
-}
-
 export const postBoardRequest = async (requestBody: PostBoardRequestDto, accessToken: string) => {
     const result =  await axios.post(POST_BOARD_URL(), requestBody, authorization(accessToken))
         .then(response => {
@@ -146,33 +129,6 @@ export const postBoardRequest = async (requestBody: PostBoardRequestDto, accessT
     return result;
 }
 
-export const deleteBoardRequest = async (boardSeq: number | string, accessToken: string) => {
-    const result = await axios.delete(DELETE_BOARD_URL(boardSeq), authorization(accessToken))
-        .then(respone => {
-            const responseBody: DeleteBoardResponseDto = respone.data;
-            return responseBody;
-        })
-        .catch(error => {
-            if (!error.response) return null;
-            const responseBody: ResponseDto = error.response.data;
-            return responseBody;
-        });
-    return result;
-}
-
-export const putFavoriteRequest = async (boardSeq: number | string, accessToken: string) => {
-    const result = await axios.put(PUT_FAVORITE_URL(boardSeq), {}, authorization(accessToken))
-        .then(response => {
-            const responseBody: PutFavoriteResponseDto = response.data;
-            return responseBody;
-        })
-        .catch(error => {
-            if (!error.response) return null;
-            const responseBody: ResponseDto = error.response.data;
-            return responseBody;
-        })
-    return result;
-}
 
 const GET_SIGN_IN_USER_URL = () => `${API_DOMAIN}/user`;
 export const getSignInUserRequest = async (accessToken: string) => {
