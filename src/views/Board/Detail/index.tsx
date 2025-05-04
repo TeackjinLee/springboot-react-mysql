@@ -330,7 +330,7 @@ export default function BoardDetail() {
                     </div>
                     <div className="divider"></div>
                     <div className="board-detail-bottom-comment-pagination-box">
-                        <Pagenation/>
+                        {/*<Pagenation/>*/}
                     </div>
                     {loginUser !== null &&
                     <div className="board-detail-bottom-comment-input-box">
