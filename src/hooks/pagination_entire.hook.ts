@@ -1,10 +1,8 @@
 import {useEffect, useState} from "react";
 
-const usePagination = <T>(countPerPage: number, countPerSection: number) => {
+const usePaginationEntire = <T>(countPerPage: number, countPerSection: number) => {
     //      state: 전체 객체 리스트 상태     //
     const [totalList, setTotalList] = useState<T[]>([]);
-    //      state: 전체 객체 숫자 상태      //
-    const [totalElements, setTotalElements] = useState<number>(0);
     //      state: 보여줄 객체 리스트 상태        //
     const [viewList, setViewList] = useState<T[]>([]);
     //      state: 현재 페이지 번호 상태     //
@@ -22,7 +20,9 @@ const usePagination = <T>(countPerPage: number, countPerSection: number) => {
 
     //      function: 보여줄 객체 리스트 추출 함수      //
     const setView = () => {
-        const viewList = totalList;
+        const FIRST_INDEX = countPerPage * (currentPage - 1);
+        const LAST_INDEX = totalList.length > countPerPage * currentPage ? countPerPage * currentPage : totalList.length;
+        const viewList = totalList.slice(FIRST_INDEX, LAST_INDEX);
         setViewList(viewList);
     };
 
@@ -30,6 +30,8 @@ const usePagination = <T>(countPerPage: number, countPerSection: number) => {
     const setViewPage = () => {
         const FIRST_INDEX = countPerSection * (currentSection - 1);
         const LAST_INDEX = totalPageList.length > countPerSection * currentSection ? countPerSection * currentSection : totalPageList.length;
+        console.log(FIRST_INDEX, LAST_INDEX);
+        console.log("totalPageList:::" + totalPageList + " countPerSection:::" + countPerSection + " currentSection:::" + currentSection);
         const viewPageList = totalPageList.slice(FIRST_INDEX, LAST_INDEX);
         setViewPageList(viewPageList);
     }
@@ -37,20 +39,19 @@ const usePagination = <T>(countPerPage: number, countPerSection: number) => {
 
     //      effect: total list가 변경될 때마다 실행할 작업      //
     useEffect(() => {
-        const totalPage = Math.ceil(totalElements / countPerPage);   //  페이지 올림 처리
+        const totalPage = Math.ceil(totalList.length / countPerPage);   //  페이지 올림 처리
         const totalPageList: number[] = [];
+        console.log("totalPage111:::" + totalPage);
+        console.log("totalList111:::",totalList);
+        console.log("countPerPage111:::",countPerPage);
         for (let page = 1; page <= totalPage; page++) totalPageList.push(page);
-        console.log("totalPageList:::" + totalPageList);
         setTotalPageList(totalPageList);
-        console.log("totalElements:::",totalElements,"countPerPage:::",countPerPage,"countPerSection:::",countPerSection)
-        const totalSection = Math.ceil(totalElements / (countPerPage * countPerSection));
-        console.log("totalSection:::" + totalSection);
+
+        const totalSection = Math.ceil(totalList.length / (countPerPage * countPerSection));
         setTotalSection(totalSection);
-        console.log("totalList:::" + totalList);
-        console.log("viewList:::",viewList)
-        setCurrentPage(currentPage);
-        console.log("currentSection:::" + currentSection);
-        setCurrentSection(currentSection);
+
+        setCurrentPage(1);
+        setCurrentSection(1);
 
         setView();
         setViewPage();
@@ -71,9 +72,8 @@ const usePagination = <T>(countPerPage: number, countPerSection: number) => {
         totalSection,
         viewPageList,
         setTotalList,
-        setTotalElements,
     };
 
 };
 
-export default usePagination;
+export default usePaginationEntire;
