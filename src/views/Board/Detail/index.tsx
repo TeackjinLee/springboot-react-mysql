@@ -28,8 +28,8 @@ import { useCookies } from 'react-cookie';
 import {PostCommentRequestDto} from "apis/request/board";
 
 import dayjs from 'dayjs';
-import {DeleteBoardResponseDto, PostCommentResponseDto} from "../../../apis/response/board";
-import {usePagination} from "../../../hooks";
+import {DeleteBoardResponseDto, PostCommentResponseDto} from "apis/response/board";
+import {usePagination} from "hooks";
 
 
 //      component: 게시물 상세 화면 컴포넌트       //
@@ -37,6 +37,7 @@ export default function BoardDetail() {
 
     //      state: 게시물 번호 path variable 상태      //
     const {boardSeq} = useParams();
+
     //      state: 로그인 유저 상태        //
     const {loginUser} = useLoginUserStore();
     //      state: 쿠키 상태        //
@@ -47,11 +48,8 @@ export default function BoardDetail() {
     //      function: increase view count response 처리 함수        //
     const increaseViewCountResponse = (responseBody: IncreaseViewCountResponseDto | ResponseDto | null)=> {
         if (!responseBody) return;
-        console.log("11112");
         const {code} = responseBody;
-        console.log("11113");
         if (code === 'NB') alert('존재하지 않는 개시물입니다.');
-        console.log("11115");
         if (code === 'DBE') alert('데이터베이스 오류입니다.');
     }
 
@@ -179,7 +177,7 @@ export default function BoardDetail() {
         const commentRef = useRef<HTMLTextAreaElement | null>(null);
         //      state: 페이지네이션 관련 상태     //
         const {
-            currentPage, setCurrentPage, currentSection, setCurrentSection, viewList, setViewList, totalSection, setTotalList, viewPageList
+            currentPage, setCurrentPage, currentSection, setCurrentSection, viewList, setViewList, totalSection, setTotalList, viewPageList, setTotalElements
         } = usePagination<CommentListItem>(3, 10);
         //      state: 좋아요 리스트 상태       //
         const [favoriteList, setFavoriteList] = useState<FavoriteListItem[]>([]);
@@ -238,7 +236,7 @@ export default function BoardDetail() {
             if (code === 'AF') alert('인증에 실패했습니다.');
             if (code === 'DBE') alert('데이터베이스 오류입니다.');
             if (!boardSeq) return;
-            getCommentListRequest(boardSeq).then(getCommentListResponse);
+            getCommentListRequest(boardSeq, currentPage).then(getCommentListResponse);
         }
 
         //      function: get comment list response 처리 함수       //
@@ -248,10 +246,11 @@ export default function BoardDetail() {
             if (code === 'NB') alert('존재하지 않는 게시물입니다.');
             if (code === 'DBE') alert('데이터베이스 오류입니다.');
             if (code !== 'SU') return;
-
-            const { commentList } = responseBody as GetCommentListResponseDto;
-            setTotalList(commentList);
-            setTotalCommentCount(commentList.length);
+            console.log("currentPage:::",currentPage);
+            const { commentPageList } = responseBody as GetCommentListResponseDto;
+            setTotalList(commentPageList.content);
+            setTotalCommentCount(commentPageList.totalElements);
+            setTotalElements(commentPageList.totalElements);
         }
 
         //      event handler: 좋아요 상자 보기 클릭 이벤트 처리        //
@@ -281,8 +280,13 @@ export default function BoardDetail() {
         useEffect(() => {
             if (!boardSeq) return;
             getFavoriteListRequest(boardSeq).then(getFavoriteListResponse);
-            getCommentListRequest(boardSeq).then(getCommentListResponse);
+            getCommentListRequest(boardSeq, currentPage).then(getCommentListResponse);
         }, [boardSeq]);
+
+        useEffect(() => {
+            if (!boardSeq) return;
+            getCommentListRequest(boardSeq, currentPage).then(getCommentListResponse);
+        }, [currentPage]);
 
         //      render: 게시물 상세 하단 화면 렌더링      //
         return (

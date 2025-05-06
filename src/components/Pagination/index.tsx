@@ -30,14 +30,14 @@ export default function Pagenation(props: Props) {
         setCurrentPage((currentSection - 1) * 10);
         setCurrentSection(currentSection - 1);
     }
-
+    console.log("currentPage2:::",currentPage);
     //      event handler: 다음 클릭 이벤트 처리        //
     const onNextClickHandler = () => {
+        console.log("currentSection:::", currentSection, "totalSection:::", totalSection);
         if (currentSection === totalSection) return;
-        setCurrentPage((currentSection + 1) * 10);
+        setCurrentPage(currentSection * 10 + 1);
         setCurrentSection(currentSection + 1);
     }
-
     //      render: 게시물 상세 하단 컴포넌트 렌더링       //
     return (
         <div id='pagination-wrapper'>

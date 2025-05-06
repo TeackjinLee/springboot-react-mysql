@@ -56,7 +56,7 @@ export const signUpRequest = async (requestBody: SignInRequestDto) => {
 const GET_BOARD_URL = (boardSeq: number | string) => `${API_DOMAIN}/board/${boardSeq}`;
 const INCREASE_VIEW_COUNT = (boardSeq: number | string) => `${API_DOMAIN}/board/${boardSeq}/increase-view-count`;
 const GET_FAVORITE_LIST_URL = (boardSeq: number | string) => `${API_DOMAIN}/board/${boardSeq}/favorite-list`;
-const GET_COMMENT_LIST_URL = (boardSeq: number | string) => `${API_DOMAIN}/board/${boardSeq}/comment-list`;
+const GET_COMMENT_LIST_URL = (boardSeq: number | string, page: number | string) => `${API_DOMAIN}/board/${boardSeq}/comment-page?page=${page}`;
 const POST_BOARD_URL = () => `${API_DOMAIN}/board`;
 const PUT_FAVORITE_URL = (boardSeq: number | string) => `${API_DOMAIN}/board/${boardSeq}/favorite`;
 const POST_COMMENT_URL = (boardSeq: number | string) => `${API_DOMAIN}/board/${boardSeq}/comment`;
@@ -104,9 +104,15 @@ export const getFavoriteListRequest = async (boardSeq: number | string) => {
     return result;
 };
 
-export const getCommentListRequest = async (boardSeq: number | string) => {
-    const result = await axios.get(GET_COMMENT_LIST_URL(boardSeq))
+export const getCommentListRequest = async (boardSeq: number | string, page: number | string) => {
+    page = Number(page) -1;
+    if (page < 0) page = 0;
+    const result = await axios.get(GET_COMMENT_LIST_URL(boardSeq, page))
         .then(response => {
+            console.log("==============");
+            console.log(GET_COMMENT_LIST_URL);
+            console.log("boardSeq:::",boardSeq,"page:::",page);
+            console.log(response.data);
             const responseBody: GetCommentListResponseDto = response.data;
             return responseBody;
         })
